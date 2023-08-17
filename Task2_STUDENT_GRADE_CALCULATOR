@@ -1,0 +1,165 @@
+
+
+TASK 2:-
+----------
+
+STUDENT GRADE CALCULATOR
+---------------------------
+
+Input: Take marks obtained (out of 100) in each subject.
+Calculate Total Marks: Sum up the marks obtained in all subjects.
+Calculate Average Percentage: Divide the total marks by the total number of subjects to get the average percentage.
+Grade Calculation: Assign grades based on the average percentage achieved.
+Display Results: Show the total marks, average percentage, and the corresponding grade to the user
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+Code:-
+-------
+
+
+import java.util.*;
+
+public class STUDENT_GRADE_CALCULATOR {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int totalSubjects;
+        System.out.print("Enter the total number of subjects: ");
+        totalSubjects = scanner.nextInt();
+
+        int[] marks = new int[totalSubjects];
+        int totalMarks = 0;
+
+        for (int i = 0; i < totalSubjects; i++) {
+            System.out.print("Enter marks obtained in subject " + (i + 1) + ": ");
+            marks[i] = scanner.nextInt();
+            totalMarks += marks[i];
+        }
+
+        double averagePercentage = (double) totalMarks / totalSubjects;
+
+        String grade;
+        if (averagePercentage >= 90) {
+            grade = "A";
+        } else if (averagePercentage >= 80) {
+            grade = "B";
+        } else if (averagePercentage >= 70) {
+            grade = "C";
+        } else if (averagePercentage >= 60) {
+            grade = "D";
+        } else {
+            grade = "F";
+        }
+
+        System.out.println("\nResults:");
+        System.out.println("Total Marks: " + totalMarks);
+        System.out.println("Average Percentage: " + averagePercentage + "%");
+        System.out.println("Grade: " + grade);
+    }
+}
+
+/*
+
+Description:-
+----------------
+
+The code first imports the java.util package, which contains the Scanner class. The Scanner class is used to read input from the user.
+
+The code then defines the following variables:
+* totalSubjects: The total number of subjects.
+* marks: An array of marks, one for each subject.
+* totalMarks: The total marks for all subjects.
+* averagePercentage: The average percentage mark.
+* grade: The student's grade.
+
+The code then prompts the user to enter the total number of subjects.
+The code then creates an array of marks with the specified size.
+The code then enters a loop where the user enters the marks for each subject.
+In each iteration of the loop, the code prompts the user to enter the marks for a subject and stores the user's input in the corresponding element of the marks array. The code also adds the marks for the current subject to the totalMarks variable.
+After the loop, the code calculates the average percentage mark by dividing the totalMarks variable by the totalSubjects variable.
+
+The code then uses an if-else statement to determine the student's grade. The grade is assigned based on the following criteria:
+* A: If the average percentage mark is greater than or equal to 90.
+* B: If the average percentage mark is greater than or equal to 80 and less than 90.
+* C: If the average percentage mark is greater than or equal to 70 and less than 80.
+* D: If the average percentage mark is greater than or equal to 60 and less than 70.
+* F: If the average percentage mark is less than 60.
+
+The code then prints the results, including the total marks, average percentage mark, and grade.
+
+Here is a more detailed explanation of some of the key lines of code:
+
+int[] marks = new int[totalSubjects];
+
+This line of code creates an array of marks with the specified size. The new keyword creates a new array of the specified type and size. The int[] specifies that the array is of type int and the totalSubjects specifies the size of the array.
+
+averagePercentage = (double) totalMarks / totalSubjects;
+
+This line of code calculates the average percentage mark by dividing the totalMarks variable by the totalSubjects variable. The double keyword casts the result of the division to the double type.
+
+if (averagePercentage >= 90) {
+    grade = "A";
+} else if (averagePercentage >= 80) {
+    grade = "B";
+} else if (averagePercentage >= 70) {
+    grade = "C";
+} else if (averagePercentage >= 60) {
+    grade = "D";
+} else {
+    grade = "F";
+}
+
+This line of code uses an if-else statement to determine the student's grade. The grade is assigned based on the value of the averagePercentage variable.
+90 or more than 90 - A grade
+80 or more than 80 - B grade
+70 or more than 70 - C grade
+60 or more than 60 - D grade
+Less than 60 - F grade
+
+F means Fail
+ */
+
+ /*
+
+ Result/Outputs&Inputs:-
+--------------------------
+
+Output 1:-
+Enter the total number of subjects: 5
+Enter marks obtained in subject 1: 89
+Enter marks obtained in subject 2: 98
+Enter marks obtained in subject 3: 87
+Enter marks obtained in subject 4: 67
+Enter marks obtained in subject 5: 90
+
+Results:
+Total Marks: 431
+Average Percentage: 86.2%
+Grade: B
+
+
+Output 2:-
+Enter the total number of subjects: 2
+Enter marks obtained in subject 1: 12
+Enter marks obtained in subject 2: 20
+
+Results:
+Total Marks: 32
+Average Percentage: 16.0%
+Grade: F
+
+
+Output 3:-
+Enter the total number of subjects: 4
+Enter marks obtained in subject 1: 90
+Enter marks obtained in subject 2: 95
+Enter marks obtained in subject 3: 98
+Enter marks obtained in subject 4: 97
+
+Results:
+Total Marks: 380
+Average Percentage: 95.0%
+Grade: A
+  */
