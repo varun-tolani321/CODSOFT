@@ -1,0 +1,339 @@
+
+TASK 3
+--------
+
+QUIZ APPLICATION WITH TIMER
+--------------------------------
+1. Quiz Questions and Options: Store quiz questions along with multiple-choice options and correct answers.
+2.Timer: Implement a timer for each question to limit the time to answer.
+3. Question Display: Present one question at a time with multiple-choice options.
+4. Answer Submission: Allow users to select an option and submit their answer within the given time.
+5. Score Calculation: Keep track of the user's score based on correct answers. Result Screen: Display the final score and a summary of correct/incorrect answers.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Code:
+------
+
+// Task 3 QUIZ APPLICATION WITH TIMER
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class QuizApp {
+    private JFrame frame;
+    private JLabel questionLabel;
+    private JRadioButton[] optionButtons;
+    private JButton submitButton;
+    private int currentQuestionIndex = 0;
+    private int score = 0;
+    private Timer timer;
+    private int remainingTime = 10; // seconds
+
+    private Question[] questions = {
+            new Question("1.Who has created this Quiz?", new String[]{"Varun Tolani","Sagar Tolani","Varun Dhawan"},"Varun Tolani"),
+            new Question("2.What is the capital of France?", new String[]{"Paris", "London", "Berlin"}, "Paris"),
+            new Question("3.What is the largest ocean in the world?", new String[]{"Pacific Ocean", "Atlantic Ocean", "Indian Ocean"}, "Pacific Ocean"),
+            new Question("4.What is the capital of India?", new String[]{"New Delhi", "Mumbai", "Chennai"}, "New Delhi"),
+            new Question("5.Which state is known as the “Fruit Bowl” of India?", new String[]{"Meghalaya", "Kerala", "Maharashtra"}, "Kerala"),
+            new Question("6.Who is the first Prime Minister of India?", new String[]{"Jawaharlal Nehru", "Mahatma Gandhi", "Sardar Patel"}, "Jawaharlal Nehru"),
+            new Question("7.Who is the national poet of India?", new String[]{"Rabindranath Tagore", "Kavi Pradeep", "Subhas Chandra Bose"}, "Rabindranath Tagore"),
+            new Question("8.What is the national sport of India?", new String[]{"Cricket", "Hockey", "Football"}, "Hockey"),
+            new Question("9.What is the national language of India?", new String[]{"Hindi", "English", "Tamil"}, "Hindi"),
+            new Question("10.What is the name of the national flag of India?", new String[]{"Tiranga", "Panjab", "Haryana"}, "Tiranga"),
+            new Question("11.What is the name of the national anthem of India?", new String[]{"Jana Gana Mana", "Vande Mataram", "Sare Jahan Se Accha"}, "Jana Gana Mana"),
+            new Question("12.What is the name of the national flower of India?", new String[]{"Lotus", "Rose", "Sunflower"}, "Lotus"),
+            new Question("13.What is the name of the national animal of India?", new String[]{"Tiger", "Lion", "Elephant"}, "Tiger"),        
+            new Question("14.What is the tallest mountain in the world?", new String[]{"Mount Everest", "K2", "Kangchenjunga"}, "Mount Everest"),
+            new Question("15.What is the longest river in the world?", new String[]{"Nile River", "Amazon River", "Yangtze River"}, "Amazon River"),
+            new Question("16.What is the name of the largest country in the world?", new String[]{"Russia", "China", "Canada"}, "Russia"),
+            new Question("17.What is the capital of the United States?", new String[]{"Washington, D.C.", "New York City", "Los Angeles"}, "Washington, D.C."),
+            new Question("18.What is the name of the current president of the United States?", new String[]{"Joe Biden", "Donald Trump", "Barack Obama"}, "Joe Biden"),
+            new Question("19.What is the name of the currency of the United States?", new String[]{"Dollar", "Euro", "Pound Sterling"}, "Dollar"),
+            new Question("20.What is the name of the national animal of the United States?", new String[]{"Bald eagle", "Bear", "Wolf"}, "Bald eagle"),
+            new Question("21.What is the name of the national flower of the United States?", new String[]{"Rose", "Tulip", "Sunflower"}, "Rose"),
+            new Question("22.What is the name of the national song of the United States?", new String[]{"Star-Spangled Banner", "America the Beautiful", "This Land is Your Land"}, "Star-Spangled Banner"),
+            new Question("23.Which planet is known as the Red Planet?", new String[]{"Mars", "Venus", "Jupiter"}, "Mars")
+            // Add more questions here
+    };
+
+    public QuizApp() {
+        frame = new JFrame("Quiz App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new GridLayout(5, 1));
+
+        questionLabel = new JLabel(questions[currentQuestionIndex].getQuestionText());
+        frame.add(questionLabel);
+
+        optionButtons = new JRadioButton[3];
+        ButtonGroup buttonGroup = new ButtonGroup();
+        for (int i = 0; i < 3; i++) {
+            optionButtons[i] = new JRadioButton(questions[currentQuestionIndex].getOptions()[i]);
+            buttonGroup.add(optionButtons[i]);
+            frame.add(optionButtons[i]);
+        }
+
+        submitButton = new JButton("Submit");
+        frame.add(submitButton);
+
+        submitButton.addActionListener(new ActionListener() {
+           
+            public void actionPerformed(ActionEvent e) {
+                checkAnswer();
+            }
+        });
+
+        frame.setVisible(true);
+
+        timer = new Timer(1000, new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                remainingTime--;
+                if (remainingTime <= 0) {
+                    timer.stop();
+                    checkAnswer();
+                }
+            }
+        });
+        timer.start();
+    }
+
+    private void checkAnswer() {
+        if (optionButtons[questions[currentQuestionIndex].getCorrectOptionIndex()].isSelected()) {
+            score++;
+        }
+
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            questionLabel.setText(questions[currentQuestionIndex].getQuestionText());
+            for (int i = 0; i < 3; i++) {
+                optionButtons[i].setText(questions[currentQuestionIndex].getOptions()[i]);
+                optionButtons[i].setSelected(false);
+            }
+            remainingTime = 10;
+            timer.restart();
+        } else {
+            timer.stop();
+            showResult();
+        }
+    }
+    private void showResult() {
+        frame.getContentPane().removeAll();
+        JLabel resultLabel = new JLabel("Quiz Completed. Your Score:" + score +"/23");
+        JLabel correctLabel=new JLabel("1.Correct Answer: Varun Tolani"); 
+                JLabel correctLabel1=new JLabel("2.Correct Answer: Paris");
+                JLabel correctLabel2=new JLabel("3.Correct Answer: Pacific Ocean");
+                JLabel correctLabel3=new JLabel("4.Correct Answer: New Delhi");
+                JLabel correctLabel4=new JLabel("5.Correct Answer: Kerala");
+                JLabel correctLabel5=new JLabel("6.Correct Answer: Jawaharlal Nehru");
+                JLabel correctLabel6=new JLabel("7.Correct Answer: Rabindranath Tagore");
+                JLabel correctLabel7=new JLabel("8.Correct Answer: Hockey");
+                JLabel correctLabel8=new JLabel("9.Correct Answer: Hindi");
+                JLabel correctLabel9=new JLabel("10.Correct Answer: Tiranga");
+                JLabel correctLabel10=new JLabel("11.Correct Answer: Jana Gana Mana");
+                JLabel correctLabel11=new JLabel("12.Correct Answer: Lotus");
+                JLabel correctLabel12=new JLabel("13.Correct Answer: Tiger");
+                JLabel correctLabel13=new JLabel("14.Correct Answer: Mount Everest");
+                JLabel correctLabel14=new JLabel("15.Correct Answer: Amazon River");
+                JLabel correctLabel15=new JLabel("16.Correct Answer: Russia");
+                JLabel correctLabel16=new JLabel("17.Correct Answer: Washington, D.C.");
+                JLabel correctLabel17=new JLabel("18.Correct Answer: Joe Biden");
+                JLabel correctLabel18=new JLabel("19.Correct Answer: Dollar");
+                JLabel correctLabel19=new JLabel("20.Correct Answer: Bald eagle");
+                JLabel correctLabel20=new JLabel("21.Correct Answer: Rose");
+                JLabel correctLabel21=new JLabel("22.Correct Answer: Star-Spangled Banner");
+                JLabel correctLabel22=new JLabel("23.Correct Answer: Mars");
+
+//Open multi comment for questions with the answers.on terminal.
+/* 
+System.out.println("1. Who has created this Quiz?");
+System.out.println("Correct Answer: Varun Tolani");
+
+System.out.println("2. What is the capital of France?");
+System.out.println("Correct Answer: Paris");
+
+System.out.println("3. What is the largest ocean in the world?");
+System.out.println("Correct Answer: Pacific Ocean");
+
+System.out.println("4. What is the capital of India?");
+System.out.println("Correct Answer: New Delhi");
+
+System.out.println("5. Which state is known as the “Fruit Bowl” of India?");
+System.out.println("Correct Answer: Kerala");
+
+System.out.println("6. Who is the first Prime Minister of India?");
+System.out.println("Correct Answer: Jawaharlal Nehru");
+
+System.out.println("7. Who is the national poet of India?");
+System.out.println("Correct Answer: Rabindranath Tagore");
+
+System.out.println("8. What is the national sport of India?");
+System.out.println("Correct Answer: Hockey");
+
+System.out.println("9. What is the national language of India?");
+System.out.println("Correct Answer: Hindi");
+
+System.out.println("10. What is the name of the national flag of India?");
+System.out.println("Correct Answer: Tiranga");
+
+System.out.println("11. What is the name of the national anthem of India?");
+System.out.println("Correct Answer: Jana Gana Mana");
+
+System.out.println("12. What is the name of the national flower of India?");
+System.out.println("Correct Answer: Lotus");
+
+System.out.println("13. What is the name of the national animal of India?");
+System.out.println("Correct Answer: Tiger");
+
+System.out.println("14. What is the tallest mountain in the world?");
+System.out.println("Correct Answer: Mount Everest");
+
+System.out.println("15. What is the longest river in the world?");
+System.out.println("Correct Answer: Amazon River");
+
+System.out.println("16. What is the name of the largest country in the world?");
+System.out.println("Correct Answer: Russia");
+
+System.out.println("17. What is the capital of the United States?");
+System.out.println("Correct Answer: Washington, D.C.");
+
+System.out.println("18. What is the name of the current president of the United States?");
+System.out.println("Correct Answer: Joe Biden");
+
+System.out.println("19. What is the name of the currency of the United States?");
+System.out.println("Correct Answer: Dollar");
+
+System.out.println("20. What is the name of the national animal of the United States?");
+System.out.println("Correct Answer: Bald eagle");
+
+System.out.println("21. What is the name of the national flower of the United States?");
+System.out.println("Correct Answer: Rose");
+
+System.out.println("22. What is the name of the national song of the United States?");
+System.out.println("Correct Answer: Star-Spangled Banner");
+
+System.out.println("23. Which planet is known as the Red Planet?");
+System.out.println("Correct Answer: Mars");
+*/
+        frame.add(resultLabel);
+        frame.add(correctLabel);
+        frame.add(correctLabel1);
+        frame.add(correctLabel2);
+        frame.add(correctLabel3);
+        frame.add(correctLabel4);
+        frame.add(correctLabel5);
+        frame.add(correctLabel6);
+        frame.add(correctLabel7);
+        frame.add(correctLabel8);
+        frame.add(correctLabel9);
+        frame.add(correctLabel10);
+        frame.add(correctLabel11);
+        frame.add(correctLabel12);
+        frame.add(correctLabel13);
+        frame.add(correctLabel14);
+        frame.add(correctLabel15);
+        frame.add(correctLabel16);
+        frame.add(correctLabel17);
+        frame.add(correctLabel18);
+        frame.add(correctLabel19);
+        frame.add(correctLabel20);
+        frame.add(correctLabel21);
+        frame.add(correctLabel22);
+        frame.revalidate();
+        frame.repaint();
+    }
+   
+
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new QuizApp();
+            }
+        });
+    }
+}
+
+class Question {
+    private String questionText;
+    private String[] options;
+    private int correctOptionIndex;
+
+    public Question(String questionText, String[] options, String correctOption) {
+        this.questionText = questionText;
+        this.options = options;
+        for (int i = 0; i < options.length; i++) {
+            if (options[i].equals(correctOption)) {
+                this.correctOptionIndex = i;
+                break;
+            }
+        }
+    }
+
+    public String getQuestionText() {
+        return questionText;
+    }
+
+    public String[] getOptions() {
+        return options;
+    }
+
+    public int getCorrectOptionIndex() {
+        return correctOptionIndex;
+    }
+}
+
+/*
+ Description:
+
+Open multi comment for questions with the answers.on terminal.
+
+The code first creates a QuizApp object, which initializes the frame, the questions, and the timer. The QuizApp object then enters a loop where it displays a question, gets the user's answer, and checks the answer. If the answer is correct, the score is incremented. If the time runs out, the answer is automatically checked. The loop continues until all the questions have been answered. At the end of the quiz, the score is displayed.
+
+The Question class represents a question in the quiz. It has three properties: the question text, the options, and the index of the correct option.
+
+The checkAnswer() method in the QuizApp class checks the user's answer. It gets the index of the selected option and compares it to the index of the correct option. If the selected option is the correct option, the score is incremented.
+
+The showResult() method in the QuizApp class displays the quiz results. It creates a JLabel object with the text "Quiz Completed. Your Score: " followed by the score. The JLabel object is then added to the frame.
+
+Here is a more detailed explanation of some of the key lines of code:
+
+timer = new Timer(1000, new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                remainingTime--;
+                if (remainingTime <= 0) {
+                    timer.stop();
+                    checkAnswer();
+                }
+            }
+        });
+        timer.start();
+
+This line of code creates a Timer object with a delay of 1000 milliseconds (1 second). The timer fires an ActionEvent every second, which is handled by the anonymous inner class. The anonymous inner class decrements the remainingTime variable and checks if it is less than or equal to 0. If it is, the timer is stopped and the checkAnswer() method is called.
+
+if (optionButtons[questions[currentQuestionIndex].getCorrectOptionIndex()].isSelected()) {
+            score++;
+        }
+
+This line of code checks if the selected option is the correct option for the current question. If it is, the score variable is incremented.
+
+showResult() {
+        frame.getContentPane().removeAll();
+        JLabel resultLabel = new JLabel("Quiz Completed. Your Score: " + score);
+        frame.add(resultLabel);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+This line of code removes all the components from the frame and adds a new JLabel object with the text "Quiz Completed. Your Score: " followed by the score. The frame is then revalidated and repainted.
+
+ */
+
+ /*
+  Result/Output&Inputs:-
+  ------------------------
+A screen will appear on which questions and options will be there you have to selectright option and then result will come as score and display correct answers.
+  */
